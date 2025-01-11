@@ -20,6 +20,7 @@ func AcquirePoPTokenConfidential(
 	authority,
 	clientID,
 	tenantID string,
+	instanceDiscovery bool,
 	options *azcore.ClientOptions,
 	popKeyFunc func() (*SwKey, error),
 ) (string, int64, error) {
@@ -43,6 +44,7 @@ func AcquirePoPTokenConfidential(
 			cred,
 			confidential.WithHTTPClient(options.Transport.(*http.Client)),
 			confidential.WithX5C(),
+			confidential.WithInstanceDiscovery(instanceDiscovery),
 		)
 	} else {
 		client, err = confidential.New(
@@ -50,6 +52,7 @@ func AcquirePoPTokenConfidential(
 			clientID,
 			cred,
 			confidential.WithX5C(),
+			confidential.WithInstanceDiscovery(instanceDiscovery),
 		)
 	}
 	if err != nil {
